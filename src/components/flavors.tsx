@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { useFlavorIDs, useFlavorByID } from '../datamodel/subscriptions'
 import { randomFlavor } from '../datamodel/flavors'
 
@@ -44,9 +44,12 @@ export default function Flavors({ reflect }: FlavorsProps) {
 
 function Flavor({ reflect, flavorID }: any) {
   const flavor: any = useFlavorByID(reflect, flavorID)
+
   return (
     <div className={'w-96 flex flex-row'}>
-      <div className={'grow'}>{flavor && flavor.name}</div>
+      {flavor && (
+        <FlavorEdit flavor={flavor} reflect={reflect} flavorID={flavorID} />
+      )}
       <div
         onClick={() => {
           reflect.mutate.deleteFlavor(flavorID)
@@ -54,6 +57,22 @@ function Flavor({ reflect, flavorID }: any) {
       >
         delete
       </div>
+    </div>
+  )
+}
+
+function FlavorEdit({ flavor, reflect, flavorID }: any) {
+  const [name, setName] = useState(flavor.name)
+
+  useEffect(() => {
+    let updatedFlavor = flavor
+    updatedFlavor = { ...updatedFlavor, name }
+    reflect.mutate.updateFlavor({ id: flavorID, flavor: updatedFlavor })
+  }, [name])
+
+  return (
+    <div className={'grow'}>
+      <input value={name} onChange={(e) => setName(e.target.value)} />
     </div>
   )
 }
