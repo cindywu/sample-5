@@ -45,8 +45,15 @@ export default function Flavors({ reflect }: FlavorsProps) {
 function Flavor({ reflect, flavorID }: any) {
   const flavor: any = useFlavorByID(reflect, flavorID)
   return (
-    <div className={'flex flex-row'}>
-      <div>{flavor && flavor.name}</div>
+    <div className={'w-96 flex flex-row'}>
+      <div className={'grow'}>{flavor && flavor.name}</div>
+      <div
+        onClick={() => {
+          reflect.mutate.deleteFlavor(flavorID)
+        }}
+      >
+        delete
+      </div>
     </div>
   )
 }
