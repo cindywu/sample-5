@@ -12,7 +12,8 @@ export default function Flavors({ reflect }: FlavorsProps) {
 
   function addNewFlavor() {
     let flavor: any = randomFlavor()
-    flavor.flavor = { ...flavor, name: inputRef.current?.value || 'no name' }
+    flavor.flavor.name = inputRef.current?.value || 'no name'
+    console.log('flavor', flavor)
     reflect.mutate.createFlavor(flavor)
     inputRef.current.value = ''
   }
@@ -27,11 +28,11 @@ export default function Flavors({ reflect }: FlavorsProps) {
               <Flavor reflect={reflect} flavorID={id} />
             </div>
           ))}
-        <div className={'bg-blue-200 flex flex-col p-4'}>
+        <div className={'my-2 bg-gray-200 flex flex-col p-4'}>
           <label htmlFor={'flavorName'}>Flavor name</label>
           <input ref={inputRef} />
           <div
-            className={'bg-blue-300 mt-4 px-2'}
+            className={'bg-gray-400 mt-4 cursor-pointer px-2 hover:bg-gray-500'}
             onClick={() => addNewFlavor()}
           >
             add rand flavor
@@ -46,7 +47,13 @@ function Flavor({ reflect, flavorID }: any) {
   const flavor: any = useFlavorByID(reflect, flavorID)
 
   return (
-    <div className={'w-96 flex flex-row'}>
+    <div
+      className={`w-96 p-4 flex flex-row
+    ${flavor && flavor.color}
+
+
+    `}
+    >
       {flavor && (
         <FlavorEdit flavor={flavor} reflect={reflect} flavorID={flavorID} />
       )}
@@ -63,6 +70,8 @@ function Flavor({ reflect, flavorID }: any) {
 
 function FlavorEdit({ flavor, reflect, flavorID }: any) {
   const [name, setName] = useState(flavor.name)
+  const [color, setColor] = useState(flavor.color)
+  const [showEdit, setShowEdit] = useState<boolean>(false)
 
   useEffect(() => {
     let updatedFlavor = flavor
@@ -70,9 +79,23 @@ function FlavorEdit({ flavor, reflect, flavorID }: any) {
     reflect.mutate.updateFlavor({ id: flavorID, flavor: updatedFlavor })
   }, [name])
 
+  useEffect(() => {
+    let updatedFlavor = flavor
+    updatedFlavor = { ...updatedFlavor, color }
+    reflect.mutate.updateFlavor({ id: flavorID, flavor: updatedFlavor })
+  }, [color])
+
   return (
-    <div className={'grow'}>
-      <input value={name} onChange={(e) => setName(e.target.value)} />
+    <div className={'flex flex-col grow'}>
+      {showEdit ? (
+        <>
+          <input value={name} onChange={(e) => setName(e.target.value)} />
+          <input value={color} onChange={(e) => setColor(e.target.value)} />
+          <div onClick={() => setShowEdit(false)}>&times;</div>
+        </>
+      ) : (
+        <div onClick={() => setShowEdit(true)}>{name}</div>
+      )}
     </div>
   )
 }
