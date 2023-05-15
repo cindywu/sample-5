@@ -16,3 +16,13 @@ export function useFlavorIDs(reflect: Reflect<M>) {
     []
   )
 }
+
+export function useFlavorByID(reflect: Reflect<M>, id: string) {
+  return useSubscribe(
+    reflect,
+    async (tx) => {
+      return await tx.get(`${flavorPrefix}${id}`)
+    },
+    null
+  )
+}
