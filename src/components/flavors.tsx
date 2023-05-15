@@ -35,7 +35,7 @@ export default function Flavors({ reflect }: FlavorsProps) {
             className={'bg-gray-400 mt-4 cursor-pointer px-2 hover:bg-gray-500'}
             onClick={() => addNewFlavor()}
           >
-            add rand flavor
+            Add new flavor
           </div>
         </div>
       </div>
