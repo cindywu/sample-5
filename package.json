@@ -6,9 +6,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@rocicorp/logger": "^4.1.0",
+    "@rocicorp/reflect": "^0.13.1",
+    "@rocicorp/reflect-server": "^0.22.0",
+    "dotenv": "^16.0.3",
+    "nanoid": "^4.0.2",
     "next": "^13.3.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "replicache-react": "^2.11.0",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@types/node": "^18.16.3",
